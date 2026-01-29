@@ -1,0 +1,14 @@
+django
+djangorestframework
+django-cors-headers
+django-filter
+django-rest-framework-simplejwt
+pillow
+pytesseract
+opencv-python
+pypdf
+pandas
+celery
+redis
+django-prometheus
+dj-database-url
