@@ -18,8 +18,8 @@ Cognify is a modular, AI-powered Personal Knowledge Management (PKM) system desi
 - **Responsibility**: State management, business logic, and orchestration.
 - **Async Processing**: Integrated with Celery and Redis to handle long-running AI tasks without blocking the user interface.
 - **Database**: 
-    - **Metadata**: PostgreSQL (SQLite used for basic dev).
-    - **Vector Store**: pgvector for semantic search.
+    - **Primary Storage**: SQLite (used for both development and production for simplicity).
+    - **Vector Store**: JSON-based storage for embeddings within SQLite.
 
 ### 3. AI Pipeline (Standalone Module)
 - **Philosophy**: Stateless, independently testable Python package.

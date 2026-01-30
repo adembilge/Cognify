@@ -1,12 +1,25 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Brain, Search, Database, BarChart3, ArrowRight, Shield, Zap, Share2 } from 'lucide-react';
 
 export default function LandingPage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-[#050505]" />
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#050505] text-zinc-100 selection:bg-blue-500/30" suppressHydrationWarning>
+    <div className="min-h-screen bg-[#050505] text-zinc-100 selection:bg-blue-500/30">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">

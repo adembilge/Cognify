@@ -35,11 +35,14 @@ docker-compose up --build
 ## 🛠 Manual Setup
 
 ### Backend (Django)
-1. **Env**: `cd backend && python -m venv venv && source venv/bin/activate`
-2. **Deps**: `pip install -r requirements.txt`
-3. **Database**: `python manage.py migrate`
-4. **Task Queue**: Ensure Redis is running, then `celery -A config worker -l info`
-5. **Run**: `python manage.py runserver`
+1.  **Virtual Environment**: 
+    - Windows: `.\venv\Scripts\activate`
+    - Unix/macOS: `source venv/bin/activate`
+    - *(Note: A virtual environment `venv` already exists in the project root)*
+2.  **Dependencies**: `pip install -r backend/requirements.txt`
+3.  **Database**: `cd backend && python manage.py migrate`
+4.  **Task Queue**: Ensure Redis is running, then `celery -A config worker -l info`
+5.  **Run**: `python manage.py runserver`
 
 ### Frontend (Next.js)
 1. **Deps**: `cd frontend && npm install`
@@ -50,5 +53,5 @@ docker-compose up --build
 -   **LLM**: BART/T5 models for summarization (Simulation layer included).
 -   **Analytics**: Aggregated via Pandas `DataFrame` operations in the Django service layer.
 
-## � Security
-Cognify uses PostgreSQL for production-ready data storage and JWT tokens for secure, stateless authentication. Every document is strictly tied to the user profile that uploaded it.
+## 🔒 Security
+Cognify uses SQLite for data storage and JWT tokens for secure, stateless authentication. Every document is strictly tied to the user profile that uploaded it.

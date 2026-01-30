@@ -29,12 +29,17 @@ export default function PDFToolsPage() {
     const fetchDocuments = async () => {
         const token = localStorage.getItem('access');
         try {
-            const res = await fetch('http://localhost:8000/api/documents/', {
+            const res = await fetch('http://localhost:8000/api/documents/documents/', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (res.ok) {
                 const data = await res.json();
-                setDocuments(data.filter((d: any) => d.file_type === 'PDF'));
+                if (Array.isArray(data)) {
+                    setDocuments(data.filter((d: any) => d.file_type === 'PDF'));
+                } else {
+                    console.error('Expected array from documents API, got:', data);
+                    setDocuments([]);
+                }
             }
         } catch (err) {
             console.error(err);

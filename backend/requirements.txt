@@ -2,7 +2,7 @@ django
 djangorestframework
 django-cors-headers
 django-filter
-django-rest-framework-simplejwt
+djangorestframework-simplejwt
 pillow
 pytesseract
 opencv-python
@@ -12,3 +12,8 @@ celery
 redis
 django-prometheus
 dj-database-url
+transformers
+torch
+sentence-transformers
+scikit-learn
+numpy
