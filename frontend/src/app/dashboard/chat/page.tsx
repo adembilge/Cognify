@@ -41,7 +41,7 @@ export default function ChatPage() {
 
         const token = localStorage.getItem('access');
         try {
-            const res = await fetch('http://localhost:8000/api/documents/global_chat/', {
+            const res = await fetch('http://localhost:8000/api/documents/documents/global_chat/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

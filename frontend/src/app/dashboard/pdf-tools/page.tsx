@@ -52,13 +52,26 @@ export default function PDFToolsPage() {
         if (!selectedId) return;
         setStatus('Processing Execution...');
         const token = localStorage.getItem('access');
-        const endpoint = mode === 'split' ? 'split_pages' : 'remove_pages';
-        const body = mode === 'split'
-            ? { ranges: pages.split(',').map(r => r.split('-').map(Number)) }
-            : { pages: pages.split(',').map(Number) };
+
+        let endpoint = '';
+        let body = {};
+
+        if (mode === 'split') {
+            endpoint = 'split_pages';
+            body = { ranges: pages.split(',').map(r => r.split('-').map(Number)) };
+        } else if (mode === 'remove') {
+            endpoint = 'remove_pages';
+            body = { pages: pages.split(',').map(Number) };
+        } else if (mode === 'reorganize') {
+            endpoint = 'reorder_pages';
+            body = { page_order: pages.split(',').map(Number) };
+        } else {
+            setStatus('Mode not yet implemented in engine.');
+            return;
+        }
 
         try {
-            const res = await fetch(`http://localhost:8000/api/documents/${selectedId}/${endpoint}/`, {
+            const res = await fetch(`http://localhost:8000/api/documents/documents/${selectedId}/${endpoint}/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

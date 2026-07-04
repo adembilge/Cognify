@@ -124,7 +124,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
                 'type_distribution': []
             })
             
-        df = pd.DataFrame(list(queryset.values('uploaded_at', 'status', 'file_type', 'file_size', 'word_count')))
+        df = pd.DataFrame(list(queryset.values('uploaded_at', 'status', 'file_type', 'file_size', 'word_count', 'ai_insights')))
         df['date'] = df['uploaded_at'].dt.date
         
         # 1. Status Distribution
@@ -174,15 +174,15 @@ class DocumentViewSet(viewsets.ModelViewSet):
         # We can reuse the df dates
         if not df.empty:
             for topic in top_topics:
-                topic_data = []
+                # Portable in-memory filtering for SQLite compatibility
+                topic_series = df[df['ai_insights'].apply(lambda x: isinstance(x, dict) and topic in x.get('tags', []))]
                 for date in sorted(df['date'].unique()):
-                    count = Document.objects.filter(
-                        user=request.user, 
-                        uploaded_at__date=date,
-                        ai_insights__tags__contains=topic
-                    ).count()
-                    topic_data.append({'date': date.strftime('%Y-%m-%d'), 'topic': topic, 'count': count})
-                topic_evolution.extend(topic_data)
+                    count = len(topic_series[topic_series['date'] == date])
+                    topic_evolution.append({
+                        'date': date.strftime('%Y-%m-%d'),
+                        'topic': topic,
+                        'count': count
+                    })
         
         # 8. "Since Last Visit" Highlights (Scenario 27)
         since_ts = request.query_params.get('since')
@@ -301,7 +301,10 @@ class DocumentViewSet(viewsets.ModelViewSet):
         
         # Topic Drill-down (Req 43)
         if tag:
-            queryset = self.get_queryset().filter(ai_insights__tags__contains=tag)
+            # SQLite workaround for __contains in JSON
+            all_docs = self.get_queryset()
+            relevant_ids = [d.id for d in all_docs if d.ai_insights and tag in d.ai_insights.get('tags', [])]
+            queryset = Document.objects.filter(id__in=relevant_ids)
             return Response(DocumentSerializer(queryset, many=True).data)
 
         if not query:

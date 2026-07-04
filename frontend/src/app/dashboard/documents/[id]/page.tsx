@@ -67,10 +67,22 @@ export default function DocumentDetails() {
     useEffect(() => {
         setMounted(true);
         fetchDocument();
-        fetchNotes();
-        fetchRelatedDocs();
-        fetchLineage();
     }, [params.id]);
+
+    useEffect(() => {
+        if (doc) {
+            fetchNotes();
+            fetchRelatedDocs();
+            fetchLineage();
+        }
+    }, [doc?.id]);
+
+    const getFileUrl = (url: string) => {
+        if (!url) return '';
+        if (url.startsWith('http')) return url;
+        const baseUrl = 'http://localhost:8000';
+        return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+    };
 
     const fetchDocument = async () => {
         const token = localStorage.getItem('access');
@@ -633,9 +645,9 @@ export default function DocumentDetails() {
                         </div>
                         <div className="aspect-[16/10] bg-black/60 flex items-center justify-center p-4">
                             {doc.file_type === 'PDF' ? (
-                                <iframe src={doc.file} className="w-full h-full rounded-2xl border border-white/5 bg-white" />
+                                <iframe src={getFileUrl(doc.file)} className="w-full h-full rounded-2xl border border-white/5 bg-white" />
                             ) : (doc.file_type === 'JPG' || doc.file_type === 'PNG') ? (
-                                <img src={doc.file} alt="Preview" className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl" />
+                                <img src={getFileUrl(doc.file)} alt="Preview" className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl" />
                             ) : (
                                 <div className="text-zinc-600 italic text-sm font-mono">No visual source for this format.</div>
                             )}

@@ -8,5 +8,7 @@ router.register(r'notes', NoteViewSet, basename='note')
 router.register(r'documents', DocumentViewSet, basename='document')
 
 urlpatterns = [
+    path('analytics/', DocumentViewSet.as_view({'get': 'analytics'})),
+    path('global_chat/', DocumentViewSet.as_view({'post': 'global_chat'})),
     path('', include(router.urls)),
 ]

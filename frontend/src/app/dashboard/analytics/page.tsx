@@ -38,7 +38,7 @@ export default function AnalyticsPage() {
         const token = localStorage.getItem('access');
         const lastVisit = localStorage.getItem('last_analytics_visit') || '';
 
-        let url = 'http://localhost:8000/api/documents/analytics/';
+        let url = 'http://localhost:8000/api/documents/documents/analytics/';
         if (lastVisit) {
             url += `?since=${encodeURIComponent(lastVisit)}`;
         }
