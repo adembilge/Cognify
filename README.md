@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="docs/Images/Dashboard.png" alt="Cognify PKM Dashboard" width="900"/>
-
 # 🧠 Cognify PKM
 
 **The Intelligent Knowledge Vault — AI-powered document management that understands your content.**
@@ -24,7 +22,7 @@ Cognify is a full-stack AI-powered Personal Knowledge Management system. Drop in
 
 ---
 
-## 📸 Application Screenshots
+## 📸 Application
 
 ### 🗂️ Knowledge Vault Dashboard
 > Track all your documents at a glance. Live status indicators, AI summary counts, system health, and quick-search.
